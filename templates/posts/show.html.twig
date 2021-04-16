@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Metabook - {{ post.title }}{% endblock %}
+
+{% block body %}
+    <article>
+        <h2>{{ post.id }}</h2>
+        <p>{{ post.title }}</p>
+    </article>
+
+    <a href="{{ path('app_home') }}">Go back</a>
+{% endblock %}

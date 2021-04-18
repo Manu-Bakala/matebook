@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Metabook - New Post{% endblock %}
+
+{% block body %}
+    <h1>Create Post</h1>
+
+    {{ form_start(form_post) }}
+        {{ form_widget(form_post) }}
+        <input type="submit" value="Create Post">
+    {{ form_end(form_post) }}
+
+    <a href="{{ path('app_home') }}">Go back</a>
+{% endblock %}

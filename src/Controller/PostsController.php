@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Form\PostType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,10 +30,7 @@ class PostsController extends AbstractController
     {
         $post = new Post;
         
-        $form = $this->createFormBuilder($post)
-            ->add('title', TextType::class)
-            ->getForm()
-        ;
+        $form = $this->createForm(PostType::class, $post);
 
         $form->handleRequest($request);
 
@@ -58,14 +56,13 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/post/{id<[0-9]+>}/edit", name="app_post_edit", methods="GET|POST")
+     * @Route("/post/{id<[0-9]+>}/edit", name="app_post_edit", methods="GET|PUT")
      */
     public function edit(Post $post, Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createFormBuilder($post)
-            ->add('title', TextType::class)
-            ->getForm()
-        ;
+        $form = $this->createForm(PostType::class, $post, [
+            'method' => 'PUT'
+        ]);
 
         $form->handleRequest($request);
 
@@ -80,5 +77,16 @@ class PostsController extends AbstractController
             'post' => $post,
             'form' => $form->createView()
         ]);
+    }
+
+     /**
+     * @Route("/post/{id<[0-9]+>}/delete", name="app_post_delete", methods="DELETE")
+     */
+    public function delete(Post $post, EntityManagerInterface $em): Response
+    {
+        $em->remove($post);
+        $em->flush();
+
+        return $this->redirectToRoute('app_home');
     }
 }

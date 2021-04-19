@@ -82,10 +82,13 @@ class PostsController extends AbstractController
      /**
      * @Route("/post/{id<[0-9]+>}/delete", name="app_post_delete", methods="DELETE")
      */
-    public function delete(Post $post, EntityManagerInterface $em): Response
+    public function delete(Request $request, Post $post, EntityManagerInterface $em): Response
     {
-        $em->remove($post);
-        $em->flush();
+        if($this->isCsrfTokenValid('post_delete_'.$post->getId(), $request->request->get('csrf_token')))
+        {
+            $em->remove($post);
+            $em->flush();
+        }
 
         return $this->redirectToRoute('app_home');
     }

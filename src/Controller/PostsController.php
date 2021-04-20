@@ -39,6 +39,8 @@ class PostsController extends AbstractController
             $em->persist($post);
             $em->flush();
 
+            $this->addFlash('success','Post successfully created');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -70,6 +72,8 @@ class PostsController extends AbstractController
         {
             $em->flush();
 
+            $this->addFlash('success','Post successfully updated');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -88,6 +92,8 @@ class PostsController extends AbstractController
         {
             $em->remove($post);
             $em->flush();
+
+            $this->addFlash('info','Post successfully deleted');
         }
 
         return $this->redirectToRoute('app_home');

@@ -3,9 +3,11 @@
 {% block title %}Metabook - New Post{% endblock %}
 
 {% block body %}
-    <h1>Create Post</h1>
-
-    {{ include('posts/_form.html.twig') }}
-
-    <a href="{{ path('app_home') }}">Go back</a>
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <h1>Create Post</h1>
+            {{ include('posts/_form.html.twig') }}
+        </div>
+    </div>
+    
 {% endblock %}

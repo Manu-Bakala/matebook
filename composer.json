@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.8",
         "knplabs/knp-time-bundle": "^1.16",
+        "liip/imagine-bundle": "^2.6",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.2.*",
@@ -96,7 +97,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "5.2.*"
         }
     }

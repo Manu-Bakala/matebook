@@ -9,10 +9,10 @@
             {% for post in posts %}
                 <div class="col-lg-4 col-md-6 mx-auto">
                     <article class="post bg-white rounded shadow">
-                        <div class="mw-100 overflow-hidden">
+                        <div class="mw-100 overflow-hidden rounded-top">
                             <a href="{{ path('app_post_show', {id: post.id}) }}">
                                 <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
-                                | imagine_filter('squared_thumbnail_medium') }}" class="w-100 rounded-top" alt="{{ post.title }}" />
+                                | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
                             </a>
                         </div>
                         <h2 class="h5 pl-3 pt-3"><a href="{{ path('app_post_show', {id: post.id}) }}" class="text-secondary text-decoration-none">{{ post.title|u.truncate(30,'...') }}</a></h2>

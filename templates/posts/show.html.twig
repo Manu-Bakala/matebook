@@ -18,7 +18,7 @@
                     <small>
                         Submitted 
                         <time datetime="{{ post.createdAt|date('d-m-Y H:i:s') }}">{{ post.createdAt|ago }}</time><br> 
-                        by [OWNER FULL NAME]
+                        by {{ post.user.fullName }}
                     </small>
                 </p>
                 <div class="pl-3 pb-3">

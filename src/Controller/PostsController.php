@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Form\PostType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,7 @@ class PostsController extends AbstractController
     /**
      * @Route("/post/create", name="app_post_create", methods="GET|POST")
      */
-    public function create(Request $request, EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $em, UserRepository $userRepo): Response
     {
         $post = new Post;
         
@@ -36,6 +37,8 @@ class PostsController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            $manu_bakala = $userRepo->findOneBy(['email' => 'manu.bakala@gmail.com']);
+            $post->setUser($manu_bakala);
             $em->persist($post);
             $em->flush();
 

@@ -37,8 +37,7 @@ class PostsController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $manu_bakala = $userRepo->findOneBy(['email' => 'manu.bakala@gmail.com']);
-            $post->setUser($manu_bakala);
+            $post->setUser($this->getUser());
             $em->persist($post);
             $em->flush();
 

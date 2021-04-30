@@ -5,23 +5,25 @@
 {% block body %}
     {% if posts|length > 0 %}
         <h1 class="mb-4 text-center text-muted">{{ pluralize(posts|length, 'Post','Posts')  }}</h1>
-        <div class="row mb-5">
-            {% for post in posts %}
-                <div class="col-lg-4 col-md-6 mx-auto">
-                    <article class="post bg-white rounded shadow">
-                        <div class="mw-100 overflow-hidden rounded-top">
-                            <a href="{{ path('app_post_show', {id: post.id}) }}">
-                                <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
-                                | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
-                            </a>
-                        </div>
-                        <div class="p-3">
-                            <h2 class="h5"><a href="{{ path('app_post_show', {id: post.id}) }}" class="text-secondary text-decoration-none text-break">{{ post.title|u.truncate(30,'...') }}</a></h2>
-                            <p class="text-muted"><small>Submitted by {{ post.user.fullName }}</small></p>
-                        </div>
-                    </article>
-                </div>
-            {% endfor %}
+        <div class="container-sm">
+            <div class="row mb-5" style="width:70%;margin:auto">
+                {% for post in posts %}
+                    <div class="col-lg-12 col-md-12 mx-auto mb-5">
+                        <article class="post bg-white rounded shadow">
+                            <div class="mw-100 overflow-hidden rounded-top">
+                                <a href="{{ path('app_post_show', {id: post.id}) }}">
+                                    <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
+                                    | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
+                                </a>
+                            </div>
+                            <div class="p-3">
+                                <h2 class="h5"><a href="{{ path('app_post_show', {id: post.id}) }}" class="text-secondary text-decoration-none text-break">{{ post.title|u.truncate(30,'...') }}</a></h2>
+                                <p class="text-muted"><small>Submitted by {{ post.user.fullName }}</small></p>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     {% else %}
         <p class="h1 mt-5 text-center">No post yet. <a href="{{ path('app_post_create') }}">Be the first !</a></p>

@@ -21,7 +21,7 @@
                         </small>
                     </p>
 
-                    {% if app.user == post.user %}
+                    {% if is_granted('POST_MANAGE', post) %}
                         <div class="pt-2">
                             <a href="{{ path('app_post_edit', {id: post.id}) }}" class="btn btn-light">
                                 Edit

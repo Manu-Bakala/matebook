@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class PostsController extends AbstractController
 {
@@ -22,7 +24,6 @@ class PostsController extends AbstractController
     {
         if(! $this->getUser())
         {
-            //$this->addFlash('error','You need to log in first');
             return $this->redirectToRoute('app_login');
         }
 
@@ -32,20 +33,20 @@ class PostsController extends AbstractController
     
     /**
      * @Route("/post/create", name="app_post_create", methods="GET|POST")
+     * @Security("is_granted('ROLE_USER') && user.isVerified()")
      */
     public function create(Request $request, EntityManagerInterface $em, UserRepository $userRepo): Response
     {
-        if(! $this->getUser())
+        /*if(! $this->getUser())
         {
-            $this->addFlash('error','You need to log in first');
-            return $this->redirectToRoute('app_login');
+            throw $this->createAccessDeniedException('Not connected to create post');
         }
 
         if(! $this->getUser()->isVerified())
         {
             $this->addFlash('error','You need to have a verified account!');
             return $this->redirectToRoute('app_home');
-        }
+        }*/
 
         $post = new Post;
         
@@ -76,8 +77,7 @@ class PostsController extends AbstractController
     {
         if(! $this->getUser())
         {
-            $this->addFlash('error','You need to log in first');
-            return $this->redirectToRoute('app_login');
+            throw $this->createAccessDeniedException('Not connected to create post');
         }
 
         return $this->render('posts/show.html.twig', compact('post'));
@@ -85,13 +85,13 @@ class PostsController extends AbstractController
 
     /**
      * @Route("/post/{id<[0-9]+>}/edit", name="app_post_edit", methods="GET|PUT")
+     * @IsGranted("POST_MANAGE", subject="post")
      */
     public function edit(Post $post, Request $request, EntityManagerInterface $em): Response
     {
-        if(! $this->getUser())
+        /*if(! $this->getUser())
         {
-            $this->addFlash('error','You need to log in first');
-            return $this->redirectToRoute('app_login');
+            throw $this->createAccessDeniedException('Not connected to create post');
         }
 
         if(! $this->getUser()->isVerified())
@@ -104,7 +104,7 @@ class PostsController extends AbstractController
         {
             $this->addFlash('error','Access Forbidden');
             return $this->redirectToRoute('app_home');
-        }
+        }*/
 
         $form = $this->createForm(PostType::class, $post, [
             'method' => 'PUT'
@@ -132,10 +132,11 @@ class PostsController extends AbstractController
      */
     public function delete(Request $request, Post $post, EntityManagerInterface $em): Response
     {
-        if(! $this->getUser())
+        $this->denyAccessUnlessGranted('POST_MANAGE', $post);
+        
+        /*if(! $this->getUser())
         {
-            $this->addFlash('error','You need to log in first');
-            return $this->redirectToRoute('app_login');
+            throw $this->createAccessDeniedException('Not connected to create post');
         }
 
         if(! $this->getUser()->isVerified())
@@ -148,7 +149,7 @@ class PostsController extends AbstractController
         {
             $this->addFlash('error','Access Forbidden');
             return $this->redirectToRoute('app_home');
-        }
+        }*/
 
         if($this->isCsrfTokenValid('post_delete_'.$post->getId(), $request->request->get('csrf_token')))
         {

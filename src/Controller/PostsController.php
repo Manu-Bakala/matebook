@@ -20,6 +20,12 @@ class PostsController extends AbstractController
      */
     public function index(PostRepository $postRepository): Response
     {
+        if(! $this->getUser())
+        {
+            //$this->addFlash('error','You need to log in first');
+            return $this->redirectToRoute('app_login');
+        }
+
         $posts = $postRepository->findBy([], ['createdAt' => 'DESC']);
         return $this->render('posts/index.html.twig', compact('posts'));
     }
@@ -29,6 +35,18 @@ class PostsController extends AbstractController
      */
     public function create(Request $request, EntityManagerInterface $em, UserRepository $userRepo): Response
     {
+        if(! $this->getUser())
+        {
+            $this->addFlash('error','You need to log in first');
+            return $this->redirectToRoute('app_login');
+        }
+
+        if(! $this->getUser()->isVerified())
+        {
+            $this->addFlash('error','You need to have a verified account!');
+            return $this->redirectToRoute('app_home');
+        }
+
         $post = new Post;
         
         $form = $this->createForm(PostType::class, $post);
@@ -56,6 +74,12 @@ class PostsController extends AbstractController
      */
     public function show(Post $post): Response
     {
+        if(! $this->getUser())
+        {
+            $this->addFlash('error','You need to log in first');
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('posts/show.html.twig', compact('post'));
     }
 
@@ -64,6 +88,24 @@ class PostsController extends AbstractController
      */
     public function edit(Post $post, Request $request, EntityManagerInterface $em): Response
     {
+        if(! $this->getUser())
+        {
+            $this->addFlash('error','You need to log in first');
+            return $this->redirectToRoute('app_login');
+        }
+
+        if(! $this->getUser()->isVerified())
+        {
+            $this->addFlash('error','You need to have a verified account!');
+            return $this->redirectToRoute('app_home');
+        }
+
+        if($post->getUser() != $this->getUser())
+        {
+            $this->addFlash('error','Access Forbidden');
+            return $this->redirectToRoute('app_home');
+        }
+
         $form = $this->createForm(PostType::class, $post, [
             'method' => 'PUT'
         ]);
@@ -90,6 +132,24 @@ class PostsController extends AbstractController
      */
     public function delete(Request $request, Post $post, EntityManagerInterface $em): Response
     {
+        if(! $this->getUser())
+        {
+            $this->addFlash('error','You need to log in first');
+            return $this->redirectToRoute('app_login');
+        }
+
+        if(! $this->getUser()->isVerified())
+        {
+            $this->addFlash('error','You need to have a verified account!');
+            return $this->redirectToRoute('app_home');
+        }
+
+        if($post->getUser() != $this->getUser())
+        {
+            $this->addFlash('error','Access Forbidden');
+            return $this->redirectToRoute('app_home');
+        }
+
         if($this->isCsrfTokenValid('post_delete_'.$post->getId(), $request->request->get('csrf_token')))
         {
             $em->remove($post);

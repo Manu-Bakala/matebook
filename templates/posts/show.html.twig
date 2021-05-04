@@ -20,23 +20,27 @@
                             by {{ post.user.fullName }}
                         </small>
                     </p>
-                    <div class="pt-2">
-                        <a href="{{ path('app_post_edit', {id: post.id}) }}" class="btn btn-light">
-                            Edit
-                        </a>
-                        <a href="#" 
-                        onclick="event.preventDefault();
-                        confirm('Are you sure ?') &&
-                        document.getElementById('js-post-delete-form').submit();"
-                        class="btn btn-light">
-                            Delete
-                        </a>
 
-                        <form id="js-post-delete-form" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
-                            <input type="hidden" name="_method" value="DELETE">
-                        </form>
-                    </div>
+                    {% if app.user == post.user %}
+                        <div class="pt-2">
+                            <a href="{{ path('app_post_edit', {id: post.id}) }}" class="btn btn-light">
+                                Edit
+                            </a>
+                            <a href="#" 
+                            onclick="event.preventDefault();
+                            confirm('Are you sure ?') &&
+                            document.getElementById('js-post-delete-form').submit();"
+                            class="btn btn-light">
+                                Delete
+                            </a>
+
+                            <form id="js-post-delete-form" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
+                                <input type="hidden" name="_method" value="DELETE">
+                            </form>
+                        </div>
+                    {% endif %}
+                    
                 </div>
             </article>
         </div>

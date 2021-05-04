@@ -2,9 +2,9 @@
 
 
 {% block body %}
-    <h1>Admin Index</h1>
-
-    {% if is_granted('ROLE_ADMIN') %}
+    <h1>Admin Post Index</h1>
+    
+    {% if is_granted('ROLE_USER') %}
         <p>cool</p>
     {% endif %}
 {% endblock %}

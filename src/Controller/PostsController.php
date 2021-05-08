@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Form\PostType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Repository\PostRepository;
@@ -37,17 +38,6 @@ class PostsController extends AbstractController
      */
     public function create(Request $request, EntityManagerInterface $em, UserRepository $userRepo): Response
     {
-        /*if(! $this->getUser())
-        {
-            throw $this->createAccessDeniedException('Not connected to create post');
-        }
-
-        if(! $this->getUser()->isVerified())
-        {
-            $this->addFlash('error','You need to have a verified account!');
-            return $this->redirectToRoute('app_home');
-        }*/
-
         $post = new Post;
         
         $form = $this->createForm(PostType::class, $post);
@@ -60,7 +50,7 @@ class PostsController extends AbstractController
             $em->persist($post);
             $em->flush();
 
-            $this->addFlash('success','Post successfully created');
+            $this->addFlash('success','Publication créée avec succes');
 
             return $this->redirectToRoute('app_home');
         }
@@ -81,6 +71,21 @@ class PostsController extends AbstractController
         }
 
         return $this->render('posts/show.html.twig', compact('post'));
+    }
+
+    /**
+     * @Route("/posts/{id<[0-9]+>}", name="app_post_user_show", methods="GET")
+     */
+    public function show_posts_user(User $user, PostRepository $postRepository): Response
+    {
+        if(! $this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $posts = $postRepository->findBy(['user' => $user->getId()], ['createdAt' => 'DESC']);
+
+        return $this->render('posts/show_posts_user.html.twig', compact(['posts','user']));
     }
 
     /**
@@ -156,7 +161,7 @@ class PostsController extends AbstractController
             $em->remove($post);
             $em->flush();
 
-            $this->addFlash('info','Post successfully deleted');
+            $this->addFlash('info','Publication supprimée avec succes');
         }
 
         return $this->redirectToRoute('app_home');

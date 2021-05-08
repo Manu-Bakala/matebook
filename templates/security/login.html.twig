@@ -1,15 +1,25 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}MateBook - Connexion{% endblock %}
 
 {% block body %}
+
 <div class="row">
-    <div class="col-md-6 mx-auto">
-        <h1 class="text-center mt-5 mb-3">Please sign in</h1>
-        <p class="text-center text-muted mb-5">Your pins are waiting for you</p>
+    <div class="col-md-6 mx-auto border rounded mt-5 p-5" style="background-color: #e3f2fd;">
+        <h1 class="text-center mb-2">
+            <img src="{{ asset('build/images/logo_matebook.png') }}" width="50px" height="50px">
+            MateBook
+        </h1>
+        <p class="text-center text-muted mb-5">Vos amis vous attendent, alors connectez vous &nbsp;&nbsp;<i class="fas fa-user-friends"></i></p>
         <form method="post">
             {% if error %}
-                <div class="alert alert-error rounded mb-3" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                <div class="alert alert-error alert-dismissible fade show" role="alert">
+                    {# error.messageKey|trans(error.messageData, 'security')  #}
+                    {{ error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             {% endif %}
 
             {% if app.user %}
@@ -20,12 +30,12 @@
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" value="{{ last_username }}" name="email" id="email" class="form-control" required autofocus>
+                <input type="email" value="{{ last_username }}" name="email" id="email" class="form-control" autofocus>
             </div>
 
             <div class="form-group">
-                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" class="form-control" required>
+                 <label for="password">Mot de passe</label>
+                <input type="password" name="password" id="password" class="form-control" >
             </div>
 
             <input type="hidden" name="_csrf_token"
@@ -35,19 +45,18 @@
                 <div class="form-group">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="_remember_me"  id="remember_me">
-                        <label class="form-check-label" for="remember_me">Remember me</label>
+                        <label class="form-check-label" for="remember_me">Se souvenir de moi</label>
                     </div>
                 </div>
 
-                <a href="{{ path('app_forgot_password_request') }}">Forgot password?</a>
-            </div>
-            
+                <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+            </div>            
 
             <button class="btn btn-lg btn-block btn-primary" type="submit">
-                Sign in
+                Connexion
             </button>
 
-            <p class="mt-5 mb-3 text-center text-muted">Not register yet ? <a href="{{ path('app_register') }}">Create an account</a></p>
+            <p class="mt-5 text-center text-muted">Pas encore inscrit ? <a href="{{ path('app_register') }}">Créez un compte</a></p>
         </form>
     </div>
 </div>

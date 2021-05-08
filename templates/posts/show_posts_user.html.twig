@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Metabook - {{ user.fullName }} {% endblock %}
+
+{% block body %}
+    {% if posts|length > 0 %}
+        <h1 class="mb-4 text-center text-muted">{{ pluralize(posts|length, 'Post','Posts')  }}</h1>
+        <div class="row mb-5 post_index">
+            {% for post in posts %}
+                <div class="col-12 mx-auto mb-4">
+                    <article class="post bg-white rounded shadow">
+                        <div class="mw-100 overflow-hidden rounded-top">
+                            <a href="{{ path('app_post_show', {id: post.id}) }}">
+                                <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
+                                | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
+                            </a>
+                        </div>
+                        <div class="p-3">
+                            <h2 class="h5"><a href="{{ path('app_post_show', {id: post.id}) }}" class="text-secondary text-decoration-none text-break">{{ post.title|u.truncate(30,'...') }}</a></h2>
+                            <p class="text-muted"><small>Submitted by {{ post.user.fullName }}</small></p>
+                            <!--<a href="#" onclick="event.preventDefault();
+                        confirm('Are you sure ?') &&
+                        document.getElementById('js-post-delete-form-{{ post.id }}').submit();" class="btn btn-danger">&times; Delete</a>
+                        </div>
+
+                        <form id="js-post-delete-form-{{ post.id }}" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                        </form>-->
+
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="h1 mt-5 text-center">No post yet. <a href="{{ path('app_post_create') }}">Be the first !</a></p>
+    {% endif %}
+{% endblock %}

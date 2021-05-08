@@ -1,35 +1,56 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="{{ path('app_home') }}">MateBook</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarsExample04">
-            <ul class="navbar-nav ml-auto">
-                {% if app.user %}
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{{ path('app_post_create') }}">New Post</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_account_show') }}">Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('js-logout-form').submit();">Logout</a>
-                    </li>
-
-                    <form action="{{ path('app_logout') }}" method="POST" id="js-logout-form" hidden>
-                        <input name="csrf_token" value="{{ csrf_token('signout') }}">
-                    </form>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_register') }}">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+<header class="mb-2">
+    <div class="py-1 bg-primary">
+        <a href="tel:+32484410503" class="ml-5 text-white" style="font-size:12px;">
+            <i class="fas fa-phone"></i>
+            <span>+32 484 41 05 03</span>
+        </a> 
+        <a href="mailto: emmanuel.bakalaluvuvamu@helb-prigogine.be" class="mr-5 float-right text-white" style="font-size:12px;">
+            <i class="fas fa-envelope"></i>
+            <span>info@matebook.be</span>
+        </a>  
     </div>
-</nav>
+    <nav id="navbar_top" class="navbar navbar-expand-md border navbar-light rounded" style="background-color: #e3f2fd;">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('app_home') }}">
+            <img src="{{ asset('build/images/logo_matebook.png') }}" width="35px" height="35px" class=".align-top .align-middle .align-bottom">
+            <span>MateBook</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample04">
+                <ul class="navbar-nav ml-auto">
+                    {% if app.user %}
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ path('app_post_create') }}">New Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_home') }}">Actualité</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_post_user_show',{id: app.user.id}) }}">Mes Publications</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_account_show') }}">Compte</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('js-logout-form').submit();">Se déconnecter</a>
+                        </li>
+
+                        <form action="{{ path('app_logout') }}" method="POST" id="js-logout-form" hidden>
+                            <input name="csrf_token" value="{{ csrf_token('signout') }}">
+                        </form>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_register') }}">S'inscrire</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

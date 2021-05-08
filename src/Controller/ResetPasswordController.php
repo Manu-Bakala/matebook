@@ -40,7 +40,7 @@ class ResetPasswordController extends AbstractController
     public function request(Request $request, MailerInterface $mailer): Response
     {
         if ($this->getUser()) {
-            $this->addFlash('error','already connected');
+            $this->addFlash('error','Vous êtes déjà connecté');
             return $this->redirectToRoute('app_home');
         }
         

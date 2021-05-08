@@ -1,7 +1,32 @@
 {% for type, messages in app.flashes(['success','error','info']) %}
     {% for message in messages %}
-        <div class="alert alert-{{ type }}" role="alert">
-            {{ message }}
+
+        {% if type == 'success' %}
+            {% set color_type = '#5a9273' %}
+            {% set icon_type = 'fa-check-circle' %}
+        {% elseif type == 'error' %}
+            {% set color_type = '#cc4444' %}
+            {% set icon_type = 'fa-exclamation-circle' %}
+        {% else %}
+            {% set color_type = '#2296b7' %}
+            {% set icon_type = 'fa-info-circle"' %}
+        {% endif %}
+
+        <div aria-live="polite" aria-atomic="true">
+            <div class="toast" style="position: fixed; top: 0; right: 0;z-index:9999;">
+                <div class="toast-header">
+                    <img src="{{ asset('build/images/logo_matebook.png') }}" width="18px" height="18px" class="rounded mr-2" alt="...">
+                    <strong class="mr-auto" style="color:{{ color_type }};font-size:20px">
+                        MateBook&nbsp;&nbsp;&nbsp;<i class="fas {{ icon_type }}"></i>
+                    </strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body text-white" style="background-color:{{ color_type }};opacity:0.9">
+                    <span class="font-weight-bold" style="font-size:20px">{{ message }}</span>
+                </div>
+            </div>
         </div>
     {% endfor %}
 {% endfor %}

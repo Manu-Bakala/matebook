@@ -4,9 +4,11 @@ namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Twig\TwigFilter;
+use App\Twig\Twig_SimpleFilter;
 
 class AppExtension extends AbstractExtension
-{
+{    
     public function getFunctions(): array
     {
         return [

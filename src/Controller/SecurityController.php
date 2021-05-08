@@ -11,16 +11,23 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
+     * 
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            $this->addFlash('error','already connected');
+            $this->addFlash('error','Vous êtes déjà connecté');
+            
             return $this->redirectToRoute('app_home');
         }
 
+        $error = '';
+
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        if($authenticationUtils->getLastAuthenticationError())
+        {
+            $error = "Email ou Mot de passe est invalide";
+        }
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 

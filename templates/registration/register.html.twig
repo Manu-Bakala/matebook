@@ -1,11 +1,15 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}MateBook - Inscription{% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-md-6 mx-auto">
-            <h1 class="my-5 text-center">Create an account</h1>
+            <h1 class="my-5 text-center">
+                <img src="{{ asset('build/images/logo_matebook.png') }}" width="50px" height="50px">
+                MateBook<br>
+                <span style="font-size:30px;">Créer un compte</span>
+                </h1>
 
             {{ form_start(registrationForm) }}
                 <div class="row">
@@ -20,15 +24,15 @@
                     </div>
                     <div class="col-md-12">
                         {{ form_row(registrationForm.plainPassword, {
-                            label: 'Password'
+                            label: 'Mot de passe'
                         }) }}
                     </div>
                 </div>                
                 {{ form_row(registrationForm.agreeTerms) }}
 
-                <button type="submit" class="btn btn-primary btn-lg btn-block" formnovalidate>Register</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block" formnovalidate>S'enregister</button>
 
-                <p class="text-center text-muted mt-5">Already have an account? <a href="{{ path('app_login') }}">Log in</a></p>
+                <p class="text-center text-muted mt-5">Vous avez déjà un compte? <a href="{{ path('app_login') }}">Connectez vous ici</a></p>
 
             {{ form_end(registrationForm) }}
         </div>

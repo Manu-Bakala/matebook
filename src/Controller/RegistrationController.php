@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, EntityManagerInterface $em): Response
     {
         if ($this->getUser()) {
-            $this->addFlash('error','already connected');
+            $this->addFlash('error','Vous etes déjà');
             return $this->redirectToRoute('app_home');
         }
         

@@ -39,3 +39,36 @@ body {
         transform: scale(1.075);
     }
 }
+
+.post_index {
+    max-width: 45%;
+    margin: auto;
+}
+
+@media (max-width: 1200px) {
+    .post_index {
+        max-width: 50%;
+        margin: auto;
+    }
+}
+
+@media (max-width: 990px) {
+    .post_index {
+        max-width: 70%;
+        margin: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .post_index {
+        max-width: 80%;
+        margin: auto;
+    }
+}
+
+@media (max-width: 568px) {
+    .post_index {
+        max-width: 100%;
+        margin: auto;
+    }
+}

@@ -4,49 +4,102 @@
 
 {% block body %}
     {% if posts|length > 0 %}
-        <h1 class="mb-4 text-center text-muted">{{ pluralize(posts|length, 'Post','Posts')  }}</h1>
-        <div class="row mb-5 post_index">
-            {% for post in posts %}
-                <div class="col-12 mx-auto mb-4">
-                    <article class="post bg-white rounded shadow">
-                        <div class="p-3">
-                            <div class="row mb-3">
-                                <div class="col-2">
-                                    <img src="{{ app.user.gravatarUrl(50) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
-                                </div>
-                                <div class="col-10">
-                                    <div class="row">
-                                        <h5>{{ post.user.fullName }}</h5>
+        {#<h1 class="mb-4 text-center text-muted">{{ pluralize(posts|length, 'Post','Posts')  }}</h1>#}
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-9">
+                <div class="card position-fixed">
+                    <img class="card-img-top" src="{{ app.user.gravatarUrl(200) }}" alt="Avatar de {{ app.user.fullName }}"> 
+                    <div class="card-body">
+                        <a href="{{ path('app_post_user_show',{id: app.user.id}) }}">
+                            <h5 class="card-title text-center">
+                                {{ app.user.fullName }}
+                            </h5>
+                        </a>
+                        <p class="card-text">
+                            <small>
+                                <i class="fas fa-envelope"></i>&nbsp;
+                                {{ app.user.email }}<br>
+                                <i class="fas fa-clock"></i>&nbsp;
+                                créé le {{ app.user.createdAt|date('d/m/Y') }}<br>
+                                <i class="fas fa-user-friends"></i>&nbsp;
+                                {{ pluralize(1, 'ami','amis') }}<br>
+                                <i class="fas fa-sticky-note"></i>&nbsp;
+                                {{ pluralize(posts_user_online|length, 'publication','publications') }}
+                            </small>
+                        </p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-8 col-sm-12 post_index" >
+                <div class="row mb-5">
+                    {% for post in posts %}
+                        <div class="col-12 mx-auto mb-4">
+                            <article class="post bg-white rounded shadow">
+                                <div class="pl-3 pr-3">
+                                    <div class="row mb-3">
+                                        <div class="col-1 mt-3">
+                                            <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
+                                                <img src="{{ app.user.gravatarUrl(50) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                                            </a>
+                                        </div>
+                                        <div class="col-9 mt-3 ml-4">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
+                                                        <h5><strong>{{ post.user.fullName }}</strong></h5>
+                                                    </a>
+                                                </div>
+                                                <div class="col-12" style="margin-top:0px">
+                                                    <small class="text-muted font-weight-bold" style="font-size:11px;">
+                                                        <i class="fas fa-clock"></i>
+                                                        <time datetime="{{ post.createdAt|date('d-m-Y H:i:s') }}">
+                                                            {{ post.createdAt|date('d-m-Y H:i:s') }}
+                                                        </time>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="row">
-                                        <small class="text-muted" style="font-size:11px;">
-                                            <time datetime="{{ post.createdAt|date('d-m-Y H:i:s') }}">
-                                                {{ post.createdAt|date('d-m-Y H:i:s') }}
-                                            </time>
-                                        </small>
-                                    </div>
+                                    <p class="text-secondary">
+                                        {{ post.title }}
+                                    </p>
+                                    {# <p class="h5"><a href="{{ path('app_post_show', {id: post.id}) }}" class="text-secondary text-decoration-none text-break">{{ post.title|u.truncate(30,'...') }}</a></p> #}
                                 </div>
-                            </div>
-                            <p class="text-secondary">
-                                {{ post.title }}
-                            </p>
-                            {# <p class="h5"><a href="{{ path('app_post_show', {id: post.id}) }}" class="text-secondary text-decoration-none text-break">{{ post.title|u.truncate(30,'...') }}</a></p> #}
-                        </div>
 
-                        <div class="mw-100 overflow-hidden rounded-top">
-                            <a href="{{ path('app_post_show', {id: post.id}) }}">
-                                <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
-                                | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
+                                <div class="mw-100 overflow-hidden rounded-top">
+                                    <a href="{{ path('app_post_show', {id: post.id}) }}">
+                                        <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
+                                        | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-0">
+                <div class="position-fixed col-md-2">
+                    <div class="row">
+                    {% for post_user_online in posts_user_online|slice(0, 5) %}
+                        <div class="col-6 mw-100 overflow-hidden mb-4 rounded">
+                            <a href="{{ path('app_post_show', {id: post_user_online.id}) }}">
+                                <img src="{{ (post_user_online.imageName ? vich_uploader_asset(post_user_online) : asset('build/images/no_image.jpg')) 
+                                | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post_user_online.title }}" />
                             </a>
                         </div>
-                        
-
-                    </article>
+                    {% endfor %}
+                        <div class="col-6 mw-100 overflow-hidden mb-4 rounded">
+                            <a href="{{ path('app_post_create') }}">
+                                <img src="{{ asset('build/images/add_icon.png') | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="Ajouter une publication" />
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
     {% else %}
-        <p class="h1 mt-5 text-center">No post yet. <a href="{{ path('app_post_create') }}">Be the first !</a></p>
+        <p class="h1 mt-5 text-center">Aucune publication disponible. <a href="{{ path('app_post_create') }}">Créez une publication !</a></p>
     {% endif %}
 
 {% endblock %}

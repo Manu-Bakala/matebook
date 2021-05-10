@@ -4,21 +4,6 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
-.alert {
-    padding: 10px;
-    color: white;
-    text-align: center;
-    &.alert-success {
-        background-color: green;
-    }
-    &.alert-error {
-        background-color: red;
-    }
-    &.alert-info {
-        background-color: blue;
-    }
-}
-
 .vich-image {
     .form-check {
         @extend .mt-3;
@@ -40,6 +25,14 @@ body {
     }
 }
 
+@media (max-width:350px) {
+    .menu-first {
+        display: none;
+    }
+}
+
+
+/*
 .post_index {
     max-width: 45%;
     margin: auto;
@@ -72,3 +65,4 @@ body {
         margin: auto;
     }
 }
+*/

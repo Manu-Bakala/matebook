@@ -29,7 +29,13 @@ class PostsController extends AbstractController
         }
 
         $posts = $postRepository->findBy([], ['createdAt' => 'DESC']);
-        return $this->render('posts/index.html.twig', compact('posts'));
+        $posts_user_online = $postRepository->findBy(
+            ['user' => $this->getUser()->getId()],
+            ['createdAt' => 'DESC'],
+            $limit = null,
+            $offset = null);
+
+        return $this->render('posts/index.html.twig', compact(['posts','posts_user_online']));
     }
     
     /**

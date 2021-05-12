@@ -5,15 +5,18 @@
 {% block body %}
 
 <div class="row">
-    <div class="col-md-6 mx-auto border rounded mt-5 p-5 shadow-lg" style="background-color: #e3f2fd;">
+    <div class="col-lg-6 col-md-8 col-sm-12 mx-auto border rounded mt-5 p-5 shadow-lg" style="background-color: #e3f2fd;">
         <h1 class="text-center mb-2">
             <img src="{{ asset('build/images/logo_matebook.png') }}" width="50px" height="50px">
             MateBook
         </h1>
-        <p class="text-center text-muted mb-5">Vos amis vous attendent, alors connectez vous &nbsp;&nbsp;<i class="fas fa-user-friends"></i></p>
+        <p class="text-center text-muted mb-5">
+            Vos amis vous attendent, alors connectez vous &nbsp;&nbsp;
+            <i class="fas fa-user-friends"></i>
+        </p>
         <form method="post">
             {% if error %}
-                <div class="alert alert-error alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {# error.messageKey|trans(error.messageData, 'security')  #}
                     {{ error }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">

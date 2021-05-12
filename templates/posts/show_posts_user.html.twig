@@ -61,7 +61,7 @@
                                                 <img src="{{ app.user.gravatarUrl(50) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
                                             </a>
                                         </div>
-                                        <div class="col-9 mt-3 ml-4">
+                                        <div class="col-8 mt-3 ml-4">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
@@ -76,6 +76,25 @@
                                                         </time>
                                                     </small>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 mt-3">
+                                            <div class="float-right">
+                                            {% if app.user.id == post.user.id %}
+                                                <a href="{{ path('app_post_edit', {id: post.id}) }}" class="text-decoration-none">
+                                                    <i class="fas fa-edit text-info" style="font-size:20px;"></i>&nbsp;&nbsp;
+                                                </a>
+                                                <a href="#" 
+                                                    onclick="event.preventDefault();alert_delete_post({{ post.id }})"
+                                                    style="font-size:20px;" class="text-decoration-none">
+                                                    <i class="fas fa-trash-alt text-danger"></i>
+                                                </a>
+
+                                                <form id="js-post-delete-form{{ post.id }}" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                </form>
+                                            {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -100,6 +119,7 @@
             <div class="col-lg-3 col-md-0">
                 <div class="position-fixed col-md-2">
                     <div class="row">
+                        <h3 class="text-center mb-2 p-2">Ses dernières publications</h3>
                     {% for post in posts|slice(0, 5) %}
                         <div class="col-6 mw-100 overflow-hidden mb-4 rounded">
                             <a href="{{ path('app_post_show', {id: post.id}) }}">

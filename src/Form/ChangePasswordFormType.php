@@ -19,15 +19,15 @@ class ChangePasswordFormType extends AbstractType
         {
             $builder
                 ->add('currentPassword', PasswordType::class, [
-                    'label' => 'Current Password',
+                    'label' => 'Mot de passe actuel',
                     'attr' => [
                         'autocomplete' => 'off'
                     ],
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter your current password',
+                            'message' => 'Veuillez entrer votre mot de passe actuel',
                         ]),
-                        new UserPassword(['message' => 'Invalid current password']),
+                        new UserPassword(['message' => 'Mot de passe actuel invalide']),
                     ]
                 ]);
         }
@@ -42,17 +42,17 @@ class ChangePasswordFormType extends AbstractType
                         ]),
                         new Length([
                             'min' => 6,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
+                            'minMessage' => 'Votre mot de passe doit être au moins {{ limit }} caractères',
                             // max length allowed by Symfony for security reasons
                             'max' => 4096,
                         ]),
                     ],
-                    'label' => 'New password',
+                    'label' => 'Nouveau mot de passe',
                 ],
                 'second_options' => [
-                    'label' => 'Confirm New Password',
+                    'label' => 'Confirmer le nouveau mot de passe',
                 ],
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
                 // Instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,

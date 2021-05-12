@@ -24,14 +24,12 @@
                     {% if is_granted('POST_MANAGE', post) %}
                         <div class="pt-2">
                             <a href="{{ path('app_post_edit', {id: post.id}) }}" class="btn btn-light">
-                                Edit
+                                Modifier
                             </a>
                             <a href="#" 
-                            onclick="event.preventDefault();
-                            confirm('Are you sure ?') &&
-                            document.getElementById('js-post-delete-form').submit();"
+                            onclick="event.preventDefault();alert_delete_post()"
                             class="btn btn-light">
-                                Delete
+                                Supprimer
                             </a>
 
                             <form id="js-post-delete-form" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
@@ -44,5 +42,4 @@
             </article>
         </div>
     </div>
-    
 {% endblock %}

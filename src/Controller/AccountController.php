@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\ChangePasswordFormType;
 use App\Form\UserFormType;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,13 @@ class AccountController extends AbstractController
     /**
      * @Route("", name="app_account_show", methods="GET")
      */
-    public function show(): Response
+    public function show(PostRepository $postRepository): Response
     {
+        $posts = $postRepository->findBy(['user' => $this->getUser()->getId()]);
+
         return $this->render('account/show.html.twig', [
             'controller_name' => 'AccountController',
+            'posts' => $posts
         ]);
     }
 

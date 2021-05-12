@@ -4,19 +4,36 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-lg-6 mx-auto text-center">
-            <h1 class="my-5">Profile</h1>
-            <img src="{{ app.user.gravatarUrl(150) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle">
-            
-            <p class="lead mt-5">{{ app.user.email }}</p>
-            <h2>{{ app.user.fullName }}</h2>
-            <p><small>
-                Account created on {{ app.user.createdAt|date('d/m/y') }}
-            </small></p>
-
-            <p>
-                <a href="{{ path('app_account_edit') }}">Edit Account</a> | <a href="{{ path('app_account_edit_password') }}">Change Password</a>
-            </p>
+        <div class="col-lg-6 col-md-8 mx-auto text-center">
+            <h1 class="my-5">Mon Profil</h1>
+            <div class="card mx-auto">
+                <img src="{{ app.user.gravatarUrl(400) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded">
+                <div class="card-body">
+                    <h5 class="card-title"> {{ app.user.fullName }}</h5>
+                    <p class="card-text">
+                        Compte créé le {{ app.user.createdAt|date('d/m/y') }}
+                    </p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">{{ app.user.email }}</li>
+                        <li class="list-group-item">
+                            <i class="fas fa-user-check"></i>&nbsp;&nbsp;
+                            {{ pluralize(app.user.FriendsWithMe|length, 'abonné','abonnés') }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-user-friends"></i>&nbsp;&nbsp;
+                            {{ pluralize(app.user.MyFriends|length, 'abonnement','abonnements') }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-sticky-note"></i>&nbsp;&nbsp;
+                            {{ pluralize(posts|length, 'publication','publications') }}
+                        </li>
+                    </ul>
+                <div class="card-body">
+                <a href="{{ path('app_account_edit') }}" class="card-link">Modifier le compte</a>
+                <a href="{{ path('app_account_edit_password') }}" class="card-link">Changer le mot de passe</a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

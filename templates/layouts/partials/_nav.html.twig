@@ -14,30 +14,44 @@
     <nav id="navbar_top" class="navbar navbar-expand-lg border navbar-light rounded shadow-lg" style="background-color: #e3f2fd;">
         <div class="container">
             <a class="navbar-brand" href="{{ path('app_home') }}">
-            <img src="{{ asset('build/images/logo_matebook.png') }}" width="35px" height="35px" class=".align-top .align-middle .align-bottom">
-            <span>MateBook</span>
+                <img src="{{ asset('build/images/logo_matebook.png') }}" width="45px" height="45px" class=".align-top .align-middle .align-bottom">
+                MateBook
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsExample04">
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto justify-content-center align-items-center">
                     {% if app.user %}
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ path('app_post_create') }}">New Post</a>
+                        <li class="nav-item mr-4">
+                            <a class="nav-link" href="{{ path('app_home') }}">Actualités</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_home') }}">Actualité</a>
-                        </li>
-                        <li class="nav-item">
+                        <li class="nav-item mr-4">
                             <a class="nav-link" href="{{ path('app_user_search') }}">Recherche</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_account_show') }}">Compte</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('js-logout-form').submit();">Se déconnecter</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="card-img-top rounded-circle" src="{{ app.user.gravatarUrl(30) }}" alt="Avatar de {{ app.user.fullName }}">
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ path('app_post_create') }}">
+                                    <i class="fas fa-plus-circle text-success"></i>&nbsp;
+                                    Nouvelle publication
+                                </a>
+                                <a class="dropdown-item" href="{{ path('app_post_user_show',{id: app.user.id}) }}">
+                                    <i class="fas fa-sticky-note text-info"></i>&nbsp;
+                                    Mes Publications
+                                </a>
+                                <a class="dropdown-item" href="{{ path('app_account_show') }}">
+                                    <i class="fas fa-user-circle text-primary"></i>&nbsp;
+                                    Mon Compte
+                                </a>
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('js-logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt text-warning"></i>&nbsp;
+                                    Se déconnecter
+                                </a>
+                            </div>
                         </li>
 
                         <form action="{{ path('app_logout') }}" method="POST" id="js-logout-form" hidden>

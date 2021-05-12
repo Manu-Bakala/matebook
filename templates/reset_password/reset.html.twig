@@ -1,15 +1,19 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}Réinitialisez votre mot de passe{% endblock %}
 
 {% block body %}
     <div class="row">
-        <div class="col-lg-6 mx-auto">
-            <h1 class="mb-3 mt-5 text-center">Reset your password</h1>
+        <div class="col-lg-8 col-sm-12 mx-auto border rounded mt-5 p-5 shadow-lg" style="background-color: #e3f2fd;">
+            <h1 class="text-center mb-5">
+                <img src="{{ asset('build/images/logo_matebook.png') }}" width="50px" height="50px">
+                MateBook<br>
+                <span style="font-size:30px;">Réinitialisez votre mot de passe</span>
+            </h1>
 
             {{ form_start(resetForm) }}
                 {{ form_row(resetForm.newPassword) }}
-                <button type="submit" class="btn btn-lg btn-primary btn-block">Reset password</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block mt-5">Modifier</button>
             {{ form_end(resetForm) }}
         </div>
     </div>

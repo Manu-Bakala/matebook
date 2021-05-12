@@ -1,25 +1,33 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}MateBook - Réinitialisez votre mot de passe{% endblock %}
 
 {% block body %}
     <div class="row">
-        <div class="col-lg-6 mx-auto">
-            <h1 class="mt-5 mb-3 text-center">Reset your password</h1>
+        <div class="col-lg-8 col-sm-12 mx-auto border rounded mt-5 p-5 shadow-lg" style="background-color: #e3f2fd;">
+            <h1 class="mt-2 mb-3 text-center">
+                <img src="{{ asset('build/images/logo_matebook.png') }}" width="50px" height="50px">
+                MateBook<br>
+                <span style="font-size:30px;">Réinitialisez votre mot de passe</span>
+            </h1>
             
             {% for flashError in app.flashes('reset_password_error') %}
-                <div class="alert alert-error mb-3 rounded" role="alert">{{ flashError }}</div>
+                {#<div class="alert alert-danger mb-3 rounded" role="alert">{{ flashError }}</div>#}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ flashError }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             {% endfor %} 
 
             <p class="mb-5 text-center text-muted">
-                Enter your email address and we we will send you a
-                link to reset your password.
+                Saisissez votre adresse électronique et nous vous enverrons un lien pour réinitialiser votre mot de passe.
             </p>
 
             {{ form_start(requestForm) }}
                 {{ form_row(requestForm.email) }}
-
-                <button type="submit" class="btn btn-lg btn-primary btn-block">Send password reset email</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block mt-5">Envoyer</button>
             {{ form_end(requestForm) }}
         </div>
     </div>

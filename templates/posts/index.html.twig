@@ -29,8 +29,17 @@
                                 {{ pluralize(posts_user_online|length, 'publication','publications') }}
                             </small>
                         </p>
+                        <p class="text-center">
+                            <a href="{{ path('app_account_show') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-user-circle"></i>&nbsp;
+                                Mon profil
+                            </a>
+                        </p>
                         <p class="text-center mb-0">
-                            <a href="{{ path('app_account_show') }}" class="btn btn-primary">Mon profil</a>
+                            <a href="#" class="btn btn-warning btn-sm" onclick="event.preventDefault(); document.getElementById('js-logout-form').submit();">
+                                <i class="fas fa-sign-out-alt"></i>&nbsp;
+                                Se déconnecter
+                            </a>
                         </p>
                     </div>
                 </div>
@@ -47,7 +56,7 @@
                                                 <img src="{{ app.user.gravatarUrl(50) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
                                             </a>
                                         </div>
-                                        <div class="col-9 mt-3 ml-4">
+                                        <div class="col-8 mt-3 ml-4">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
@@ -62,6 +71,25 @@
                                                         </time>
                                                     </small>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 mt-3">
+                                            <div class="float-right">
+                                            {% if app.user.id == post.user.id %}
+                                                <a href="{{ path('app_post_edit', {id: post.id}) }}" class="text-decoration-none">
+                                                    <i class="fas fa-edit text-info" style="font-size:20px;"></i>&nbsp;&nbsp;
+                                                </a>
+                                                <a href="#" 
+                                                    onclick="event.preventDefault();alert_delete_post({{ post.id }})"
+                                                    style="font-size:20px;" class="text-decoration-none">
+                                                    <i class="fas fa-trash-alt text-danger"></i>
+                                                </a>
+
+                                                <form id="js-post-delete-form{{ post.id }}" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                </form>
+                                            {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -85,6 +113,7 @@
             <div class="col-lg-3 col-md-0">
                 <div class="position-fixed col-md-2">
                     <div class="row">
+                        <h3 class="text-center mb-2 p-2">Mes dernières publications</h3>
                     {% for post_user_online in posts_user_online|slice(0, 5) %}
                         <div class="col-6 mw-100 overflow-hidden mb-4 rounded">
                             <a href="{{ path('app_post_show', {id: post_user_online.id}) }}">

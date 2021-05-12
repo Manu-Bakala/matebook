@@ -1,0 +1,96 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Metabook - Chercher un ami{% endblock %}
+
+{% block body %}
+
+    <h2>Cherchez un ami</h2>
+    <div class="search-box mb-5">
+        <div class="search-icon"><i class="fa fa-search search-icon"></i></div>
+            {{ form_start(form_search, {'attr':{'class':'search-form'}}) }}
+                {{ form_widget(form_search.search) }}
+            {{ form_end(form_search) }}
+            <svg class="search-border" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" x="0px" y="0px" viewBox="0 0 671 111" style="enable-background:new 0 0 671 111;"
+            xml:space="preserve">
+                <path class="border" d="M335.5,108.5h-280c-29.3,0-53-23.7-53-53v0c0-29.3,23.7-53,53-53h280"/>
+                <path class="border" d="M335.5,108.5h280c29.3,0,53-23.7,53-53v0c0-29.3-23.7-53-53-53h-280"/>
+            </svg>
+        <div class="go-icon"><i class="fa fa-arrow-right"></i></div>
+    </div>
+
+    
+
+    <div class="row">
+        <div class="col-12">
+            {% for user in all_users %}
+                <div class="media mb-3 border-top border-bottom">
+                    <img class="align-self-center mr-3 ml-3" src="{{ user.gravatarUrl(90) }}" alt="Avatar de {{ user.fullName }}">
+                    <div class="media-body">
+                        <div class="row mt-3 mb-3">
+                            <div class="col-lg-8 col-sm-6 col-xs-12 align-self-center">
+                                <h5 class="mt-0">
+                                    <a href="{{ path('app_post_user_show',{id: user.id}) }}">{{ user.fullName }}</a>
+                                </h5>
+                                <small><p>{{ user.email }}</p></small>
+                                <small><p class="mb-0">{{ pluralize(user.FriendsWithMe|length, 'abonné','abonnés') }}</p></small>
+                            </div>
+                            <div class="col-lg-4 col-sm-6 col-xs-12 align-self-center">
+                                <form action="{{ path('app_post_user_show',{id: user.id}) }}" method="post">
+                                    {% if user in user_friends %}
+                                        <input hidden type="number" onclick="change_id_btn_unfollow({{ user.id }})" value="1" id="unfollow_user{{ user.id }}" name="unfollow_user">
+                                        <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                            Se désabonner&nbsp;
+                                            <i class="fas fa-user-times"></i>
+                                        </button>
+                                    {% else %}
+                                        <input hidden type="number" onclick="change_id_btn_follow({{ user.id }})" value="1" id="follow_user{{ user.id }}" name="follow_user">
+                                        <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                            S'abonner&nbsp;
+                                            <i class="fas fa-user-plus"></i>
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $("#form_search").removeClass('form-control');
+
+            $("#form_search").focus(function() {
+                $(".search-box").addClass("border-searching");
+                $(".search-icon").addClass("si-rotate");
+            });
+            $("#form_search").blur(function() {
+                $(".search-box").removeClass("border-searching");
+                $(".search-icon").removeClass("si-rotate");
+            });
+            $("#form_search").keyup(function() {
+                if($(this).val().length > 0) {
+                    $(".go-icon").addClass("go-in");
+                }
+                else {
+                    $(".go-icon").removeClass("go-in");
+                }
+            });
+            $(".go-icon").click(function(){
+                $(".search-form").submit();
+            });
+        });
+
+        function change_id_btn_follow(id)
+        {
+            $('#follow_user'+id).attr('id':'follow_user')
+        }
+
+        function change_id_btn_unfollow(id)
+        {
+            $('#unfollow_user'+id).attr('id':'unfollow_user')
+        }
+    </script>
+{% endblock %}

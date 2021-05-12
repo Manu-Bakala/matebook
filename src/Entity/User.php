@@ -64,6 +64,22 @@ class User implements UserInterface
     private $posts;
 
     /**
+     * Many Users have Many Users.
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="myFriends")
+     */
+    private $friendsWithMe;
+
+    /**
+     * Many Users have many Users.
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="friendsWithMe")
+     * @ORM\JoinTable(name="friends",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_user_id", referencedColumnName="id")}
+     *      )
+     */
+    private $myFriends;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $isVerified = false;
@@ -71,6 +87,8 @@ class User implements UserInterface
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->friendsWithMe = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->myFriends = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,6 +234,22 @@ class User implements UserInterface
     public function getGravatarUrl(int $size = 200)
     {
         return 'https://www.gravatar.com/avatar/'. md5(strtolower(trim($this->getEmail()))) .'/?s='.$size;
+    }
+
+    public function getMyFriends(){
+        return $this->myFriends;
+    }
+
+    public function getFriendsWithMe(){
+        return $this->friendsWithMe;
+    }
+
+    public function addFriend(User $friend){
+        $this->myFriends->add($friend);
+    }
+
+    public function removeFriend(User $friend){
+        $this->myFriends->removeElement($friend);
     }
 
     public function isVerified(): bool

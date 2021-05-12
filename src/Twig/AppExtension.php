@@ -19,7 +19,7 @@ class AppExtension extends AbstractExtension
     public function pluralize(int $count, string $singular, ?string $plural = null): string
     {
         $plural = $plural ?? $singular . 's';
-        $result = $count === 1 ? $singular : $plural;  
+        $result = $count <= 1 ? $singular : $plural;  
         return "$count $result";
     }
 }

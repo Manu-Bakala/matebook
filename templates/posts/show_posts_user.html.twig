@@ -20,13 +20,31 @@
                                 {{ user.email }}<br>
                                 <i class="fas fa-clock"></i>&nbsp;
                                 créé le {{ user.createdAt|date('d/m/Y') }}<br>
+                                <i class="fas fa-user-check"></i>&nbsp;
+                                {{ pluralize(user.FriendsWithMe|length, 'abonné','abonnés') }}<br>
                                 <i class="fas fa-user-friends"></i>&nbsp;
-                                {{ pluralize(1, 'ami','amis') }}<br>
+                                {{ pluralize(user.MyFriends|length, 'abonnement','abonnements') }}<br>
                                 <i class="fas fa-sticky-note"></i>&nbsp;
                                 {{ pluralize(posts|length, 'publication','publications') }}
                             </small>
                         </p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <p class="text-center mb-0">
+                            <form method="post">
+                                {% if user in user_friends %}
+                                    <input hidden type="number" onclick="change_id_btn_unfollow({{ user.id }})" value="1" id="unfollow_user{{ user.id }}" name="unfollow_user">
+                                    <button type="submit" class="btn btn-primary">
+                                        Se désabonner&nbsp;
+                                        <i class="fas fa-user-times"></i>
+                                    </button>
+                                {% else %}
+                                    <input hidden type="number" onclick="change_id_btn_follow({{ user.id }})" value="1" id="follow_user{{ user.id }}" name="follow_user">
+                                    <button type="submit" class="btn btn-primary">
+                                        S'abonner&nbsp;
+                                        <i class="fas fa-user-plus"></i>
+                                    </button>
+                                {% endif %}
+                            </form>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -98,4 +116,16 @@
     {% else %}
         <p class="h1 mt-5 text-center">No post yet. <a href="{{ path('app_post_create') }}">Be the first !</a></p>
     {% endif %}
+
+    <script>
+        function change_id_btn_follow(id)
+        {
+            $('#follow_user'+id).attr('id':'follow_user')
+        }
+
+        function change_id_btn_unfollow(id)
+        {
+            $('#unfollow_user'+id).attr('id':'unfollow_user')
+        }
+    </script>
 {% endblock %}

@@ -80,18 +80,38 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/posts/{id<[0-9]+>}", name="app_post_user_show", methods="GET")
+     * @Route("/posts/{id<[0-9]+>}", name="app_post_user_show", methods="GET|POST")
      */
-    public function show_posts_user(User $user, PostRepository $postRepository): Response
+    public function show_posts_user(Request $request, User $user, PostRepository $postRepository, EntityManagerInterface $em): Response
     {
         if(! $this->getUser())
         {
             return $this->redirectToRoute('app_login');
         }
 
+        if($request->request->has('follow_user'))
+        {
+            $this->getUser()->addFriend($user);
+            $em->persist($this->getUser());
+            $em->flush();
+
+            $this->addFlash('success','Vous êtes maintenant abonné a '.$user->getFullName());
+        }
+
+        if($request->request->has('unfollow_user'))
+        {
+            $this->getUser()->removeFriend($user);
+            $em->persist($this->getUser());
+            $em->flush();
+
+            $this->addFlash('success','Vous êtes maintenant désabonné de '.$user->getFullName());
+        }
+
+        $user_friends = $this->getUser()->getMyFriends();
+
         $posts = $postRepository->findBy(['user' => $user->getId()], ['createdAt' => 'DESC']);
 
-        return $this->render('posts/show_posts_user.html.twig', compact(['posts','user']));
+        return $this->render('posts/show_posts_user.html.twig', compact(['posts','user','user_friends']));
     }
 
     /**

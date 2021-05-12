@@ -60,6 +60,9 @@
 
     $('.toast').toast({ delay: 5000 });
     $('.toast').toast('show');
+    {% if app.user %}
+        console.log({{ app.user.id }});
+    {% endif %}
     </script>
 
 </html>

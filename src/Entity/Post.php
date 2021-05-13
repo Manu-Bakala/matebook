@@ -28,7 +28,7 @@ class Post
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Veuillez ajouter une légende")
      * @Assert\Length(min=3)
      */
     private $title;

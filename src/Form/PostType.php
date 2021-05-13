@@ -4,10 +4,12 @@ namespace App\Form;
 
 use App\Entity\Post;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PostType extends AbstractType
 {
@@ -15,14 +17,16 @@ class PostType extends AbstractType
     {
         $builder
             ->add('imageFile', VichImageType::class, [
-                'label' => 'Image (JPG or PNG file)',
+                'label' => 'Choississez une image',
                 'required' => false,
                 'allow_delete' => true,
                 'delete_label' => 'Supprimer l\'image',
                 'download_uri' => false,
                 'imagine_pattern' => 'squared_thumbnail_small'
             ])
-            ->add('title')
+            ->add('title', TextType::class, [
+                'label' => 'Légende',
+                ])
         ;
     }
 

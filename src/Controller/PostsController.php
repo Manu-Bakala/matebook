@@ -69,14 +69,19 @@ class PostsController extends AbstractController
     /**
      * @Route("/post/{id<[0-9]+>}", name="app_post_show", methods="GET")
      */
-    public function show(Post $post): Response
+    public function show(Post $post, PostRepository $postRepository): Response
     {
         if(! $this->getUser())
         {
             throw $this->createAccessDeniedException('Not connected to create post');
         }
 
-        return $this->render('posts/show.html.twig', compact('post'));
+        $user = $post->getUser();
+
+        $posts_user = $postRepository->findBy(['user' => $user->getId()]);
+        $user_friends = $this->getUser()->getMyFriends();
+
+        return $this->render('posts/show.html.twig', compact('post','posts_user', 'user_friends'));
     }
 
     /**
@@ -107,11 +112,9 @@ class PostsController extends AbstractController
             $this->addFlash('success','Vous êtes maintenant désabonné de '.$user->getFullName());
         }
 
-        $user_friends = $this->getUser()->getMyFriends();
-
         $posts = $postRepository->findBy(['user' => $user->getId()], ['createdAt' => 'DESC']);
 
-        return $this->render('posts/show_posts_user.html.twig', compact(['posts','user','user_friends']));
+        return $this->render('posts/show_posts_user.html.twig', compact(['posts','user']));
     }
 
     /**

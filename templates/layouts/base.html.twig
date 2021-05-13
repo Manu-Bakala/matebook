@@ -65,6 +65,17 @@
     $('.toast').toast({ delay: 5000 });
     $('.toast').toast('show');
 
+    //Follow and UnFollow user
+    function change_id_btn_follow(id)
+    {
+        $("#follow_user"+id).attr("id", "follow_user");
+    }
+
+    function change_id_btn_unfollow(id)
+    {
+        $("#unfollow_user"+id).attr("id", "unfollow_user");
+    }
+
     //Alert before deleting post
     function alert_delete_post(id)
     {

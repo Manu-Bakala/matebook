@@ -33,6 +33,8 @@ class SearchController extends AbstractController
         
         $form_search->handleRequest($request);
 
+        $user_friends = $this->getUser()->getMyFriends();
+
         if($form_search->isSubmitted() && $form_search->isValid())
         {
             $value_search = $form_search->getData()['search'];
@@ -46,12 +48,13 @@ class SearchController extends AbstractController
 
             return $this->render('search/search_user.html.twig', [
                 'form_search' => $form_search->createView(),
-                'all_users' => $all_users
+                'all_users' => $all_users,
+                'user_friends' => $user_friends
             ]);
 
         }
+
         $all_users = $userRepository->findAll();
-        $user_friends = $this->getUser()->getMyFriends();
 
         return $this->render('search/search_user.html.twig', [
             'form_search' => $form_search->createView(),

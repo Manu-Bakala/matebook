@@ -29,10 +29,22 @@
                                 <h5 class="mt-0">
                                     <a href="{{ path('app_post_user_show',{id: user.id}) }}">{{ user.fullName }}</a>
                                 </h5>
-                                <small><p>{{ user.email }}</p></small>
-                                <small><p class="mb-0">{{ pluralize(user.FriendsWithMe|length, 'abonné','abonnés') }}</p></small>
+                                <small>
+                                    <p>
+                                        {{ user.email }}
+                                    </p>
+                                </small>
+                                <small>
+                                    <p class="mb-0">
+                                        <a href="#" class="text-decoration-none" data-toggle="modal" data-target="#modal_abonne{{ user.id }}">
+                                            {{ pluralize(user.FriendsWithMe|length, 'abonné','abonnés') }}&nbsp;
+                                            <i class="fas fa-user-friends"></i>
+                                        </a>
+                                    </p>
+                                </small>
                             </div>
                             <div class="col-lg-4 col-sm-6 col-xs-12 align-self-center">
+                            {% if app.user != user %}
                                 <form action="{{ path('app_post_user_show',{id: user.id}) }}" method="post">
                                     {% if user in user_friends %}
                                         <input hidden type="number" onclick="change_id_btn_unfollow({{ user.id }})" value="1" id="unfollow_user{{ user.id }}" name="unfollow_user">
@@ -48,10 +60,66 @@
                                         </button>
                                     {% endif %}
                                 </form>
+                            {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <!-- MODAL -->
+                <div class="modal fade" id="modal_abonne{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Abonnés</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            {% for abonne in user.FriendsWithMe %}
+                                <div class="row mb-3">
+                                    <div class="col-1">
+                                        <img src="{{ app.user.gravatarUrl(28) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="{{ path('app_post_user_show',{id: abonne.id}) }}">
+                                            {{ abonne.fullName }}
+                                        </a>
+                                    </div>
+                                    <div class="col-5">
+                                    {% if app.user != abonne %}
+                                        <form action="{{ path('app_post_user_show',{id: abonne.id}) }}" method="post">
+                                            {% if abonne in app.user.MyFriends %}
+                                                <input hidden type="number" onclick="change_id_btn_unfollow({{ abonne.id }})" value="1" id="unfollow_user{{ abonne.id }}" name="unfollow_user">
+                                                <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                                    Se désabonner&nbsp;
+                                                    <i class="fas fa-user-times"></i>
+                                                </button>
+                                            {% else %}
+                                                <input hidden type="number" onclick="change_id_btn_follow({{ abonne.id }})" value="1" id="follow_user{{ abonne.id }}" name="follow_user">
+                                                <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                                    S'abonner&nbsp;
+                                                    <i class="fas fa-user-plus"></i>
+                                                </button>
+                                            {% endif %}
+                                        </form>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {% if user.FriendsWithMe|length == 0 %}
+                                <p>Aucun abonné</p>
+                            {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             {% endfor %}
         </div>
     </div>
@@ -80,15 +148,5 @@
                 $(".search-form").submit();
             });
         });
-
-        function change_id_btn_follow(id)
-        {
-            $('#follow_user'+id).attr('id':'follow_user')
-        }
-
-        function change_id_btn_unfollow(id)
-        {
-            $('#unfollow_user'+id).attr('id':'unfollow_user')
-        }
     </script>
 {% endblock %}

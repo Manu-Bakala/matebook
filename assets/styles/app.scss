@@ -2,6 +2,7 @@
 @import "~bootstrap";
 body {
     font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to right, #5ba3b4, #e3f2fd, #1686ab);
 }
 
 .vich-image {
@@ -23,6 +24,21 @@ body {
     img:hover {
         transform: scale(1.075);
     }
+}
+
+.toast-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+.toast-message {
+    font-size: 20px;
+}
+
+.text-info-company {
+    font-size: 12px;
 }
 
 .search-box {
@@ -177,8 +193,45 @@ body {
     background: rgba(0, 0, 0, 0.25);
 }
 
+.bg-form {
+    background-color: #e3f2fd;
+}
+
+.bg-nav {
+    background-color: #e3f2fd;
+}
+
+.sub-title {
+    font-size: 30px;
+}
+
+.hour-post {
+    font-size: 11px;
+}
+
+.edit-icon {
+    font-size: 20px;
+}
+
+
+/*.modal-dialog {
+    overflow-y: initial !important
+}
+
+.modal-body {
+    //height: 10vh;
+    overflow-y: auto;
+}*/
+
 @media (max-width:350px) {
     .menu-first {
+        display: none;
+    }
+}
+
+@media(max-width:767px) {
+    .index-profile,
+    .last-post {
         display: none;
     }
 }

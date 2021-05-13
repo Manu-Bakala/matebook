@@ -32,7 +32,7 @@
                         <form method="post">
                             {% if post.user in user_friends %}
                                 <input hidden type="number" onclick="change_id_btn_unfollow({{ post.user.id }})" value="1" id="unfollow_user{{ post.user.id }}" name="unfollow_user">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-warning">
                                     Se désabonner&nbsp;
                                     <i class="fas fa-user-times"></i>
                                 </button>
@@ -52,143 +52,83 @@
 
         <div class="col-lg-6 col-md-8 col-sm-12 post_index">
             <div class="row mb-5">
-                    <div class="col-12 mx-auto mb-4">
-                        <article class="post bg-white rounded shadow">
-                            <div class="pl-3 pr-3">
-                                <div class="row mb-3">
-                                    <div class="col-1 mt-3">
-                                        <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
-                                            <img src="{{ app.user.gravatarUrl(50) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
-                                        </a>
-                                    </div>
-                                    <div class="col-8 mt-3 ml-4">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
-                                                    <h5><strong>{{ post.user.fullName }}</strong></h5>
-                                                </a>
-                                            </div>
-                                            <div class="col-12" style="margin-top:0px">
-                                                <small class="text-muted font-weight-bold" style="font-size:11px;">
-                                                    <i class="fas fa-clock"></i>
-                                                    <time datetime="{{ post.createdAt|date('d-m-Y H:i:s') }}">
-                                                        {{ post.createdAt|date('d-m-Y H:i:s') }}
-                                                    </time>
-                                                </small>
-                                            </div>
+                <div class="col-12 mx-auto mb-4">
+                    <article class="post bg-white rounded shadow">
+                        <div class="pl-3 pr-3">
+                            <div class="row mb-3">
+                                <div class="col-1 mt-3">
+                                    <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
+                                        <img src="{{ app.user.gravatarUrl(50) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                                    </a>
+                                </div>
+                                <div class="col-7 mt-3 ml-4">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
+                                                <h5><strong>{{ post.user.fullName }}</strong></h5>
+                                            </a>
                                         </div>
-                                    </div>
-                                    <div class="col-2 mt-3">
-                                        <div class="float-right">
-                                        {% if app.user.id == post.user.id %}
-                                            <a href="{{ path('app_post_edit', {id: post.id}) }}" class="text-decoration-none">
-                                                <i class="fas fa-edit text-info" style="font-size:20px;"></i>&nbsp;&nbsp;
-                                            </a>
-                                            <a href="#" 
-                                                onclick="event.preventDefault();alert_delete_post({{ post.id }})"
-                                                style="font-size:20px;" class="text-decoration-none">
-                                                <i class="fas fa-trash-alt text-danger"></i>
-                                            </a>
-
-                                            <form id="js-post-delete-form{{ post.id }}" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
-                                                <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                            </form>
-                                        {% endif %}
+                                        <div class="col-12">
+                                            <small class="text-muted font-weight-bold hour-post">
+                                                <i class="fas fa-clock"></i>
+                                                <time datetime="{{ post.createdAt|date('d-m-Y H:i:s') }}">
+                                                    {{ post.createdAt|date('d-m-Y H:i:s') }}
+                                                </time>
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
-                                <p class="text-secondary">
-                                    {{ post.title }}
-                                </p>
-                                {# <p class="h5"><a href="{{ path('app_post_show', {id: post.id}) }}" class="text-secondary text-decoration-none text-break">{{ post.title|u.truncate(30,'...') }}</a></p> #}
-                            </div>
+                                <div class="col-3 mt-3">
+                                    <div class="float-right">
+                                    {% if app.user.id == post.user.id %}
+                                        <a href="{{ path('app_post_edit', {id: post.id}) }}" class="text-decoration-none">
+                                            <i class="fas fa-edit text-info edit-icon"></i>&nbsp;&nbsp;
+                                        </a>
+                                        <a href="#" 
+                                            onclick="event.preventDefault();alert_delete_post({{ post.id }})"
+                                            class="text-decoration-none">
+                                            <i class="fas fa-trash-alt text-danger edit-icon"></i>
+                                        </a>
 
-                            <div class="mw-100 overflow-hidden rounded-top">
-                                <a href="{{ path('app_post_show', {id: post.id}) }}">
-                                    <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
-                                    | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
-                                </a>
+                                        <form hidden id="js-post-delete-form{{ post.id }}" action="{{ path('app_post_delete', {id: post.id}) }}" method="post">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                        </form>
+                                    {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                        </article>
-                    </div>
-            </div>
-        </div>
+                            <p class="text-secondary">
+                                {{ post.title }}
+                            </p>
+                            {# <p class="h5"><a href="{{ path('app_post_show', {id: post.id}) }}" class="text-secondary text-decoration-none text-break">{{ post.title|u.truncate(30,'...') }}</a></p> #}
+                        </div>
 
-        <div class="col-lg-3 col-md-0">
-                <div class="position-fixed col-md-2">
-                    <div class="row">
-                        <h3 class="text-center mb-2 p-2">Ses dernières publications</h3>
-                    {% for post in posts_user|slice(0, 5) %}
-                        <div class="col-6 mw-100 overflow-hidden mb-4 rounded">
+                        <div class="mw-100 overflow-hidden rounded-top">
                             <a href="{{ path('app_post_show', {id: post.id}) }}">
                                 <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
                                 | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
                             </a>
                         </div>
-                    {% endfor %}
-                    </div>
+                    </article>
                 </div>
             </div>
+        </div>
 
-        {#<div class="col-lg-6 col-md-8 col-sm-12 post_index">
-            <article class="post bg-white rounded shadow">
-                <div class="pl-3 pr-3">
-                    <div class="row mb-3">
-                        <div class="col-1 mt-3">
-                            <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
-                                <img src="{{ app.user.gravatarUrl(50) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
-                            </a>
-                        </div>
-                        <div class="col-8 mt-3 ml-4">
-                            <div class="row">
-                                <div class="col-12">
-                                    <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
-                                        <h5><strong>{{ post.user.fullName }}</strong></h5>
-                                    </a>
-                                </div>
-                                <div class="col-12" style="margin-top:0px">
-                                    <small class="text-muted font-weight-bold" style="font-size:11px;">
-                                        <i class="fas fa-clock"></i>
-                                        <time datetime="{{ post.createdAt|date('d-m-Y H:i:s') }}">
-                                            {{ post.createdAt|date('d-m-Y H:i:s') }}
-                                        </time>
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2 mt-3">
-                            <div class="float-right">
-                            {% if app.user.id == post.user.id %}
-                                <a href="{{ path('app_post_edit', {id: post.id}) }}" class="text-decoration-none">
-                                    <i class="fas fa-edit text-info" style="font-size:20px;"></i>&nbsp;&nbsp;
-                                </a>
-                                <a href="#" 
-                                    onclick="event.preventDefault();alert_delete_post({{ post.id }})"
-                                    style="font-size:20px;" class="text-decoration-none">
-                                    <i class="fas fa-trash-alt text-danger"></i>
-                                </a>
-
-                                <form id="js-post-delete-form{{ post.id }}" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                </form>
-                            {% endif %}
-                            </div>
-                        </div>
+        <div class="col-lg-3 col-md-0">
+            <div class="position-fixed col-md-2">
+                <div class="row">
+                    <h3 class="text-center mb-2 p-2">Ses dernières publications</h3>
+                {% for post in posts_user|slice(0, 5) %}
+                    <div class="col-6 mw-100 overflow-hidden mb-4 rounded">
+                        <a href="{{ path('app_post_show', {id: post.id}) }}">
+                            <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
+                            | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
+                        </a>
                     </div>
-                    <p class="text-secondary">
-                        {{ post.title }}
-                    </p>
+                {% endfor %}
                 </div>
-
-                <div class="mw-100 overflow-hidden rounded-top">
-                    <a href="{{ path('app_post_show', {id: post.id}) }}">
-                        <img src="{{ (post.imageName ? vich_uploader_asset(post) : asset('build/images/no_image.jpg')) 
-                        | imagine_filter('squared_thumbnail_medium') }}" class="w-100" alt="{{ post.title }}" />
-                    </a>
-                </div>
-            </article>
-        </div>#}
+            </div>
+        </div>
     </div>
 {% endblock %}

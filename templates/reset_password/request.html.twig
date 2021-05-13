@@ -4,11 +4,11 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-lg-8 col-sm-12 mx-auto border rounded mt-5 p-5 shadow-lg" style="background-color: #e3f2fd;">
+        <div class="col-lg-8 col-sm-12 mx-auto border rounded mt-5 p-5 shadow-lg bg-form">
             <h1 class="mt-2 mb-3 text-center">
                 <img src="{{ asset('build/images/logo_matebook.png') }}" width="50px" height="50px">
                 MateBook<br>
-                <span style="font-size:30px;">Réinitialisez votre mot de passe</span>
+                <span class="sub-title">Réinitialisez votre mot de passe</span>
             </h1>
             
             {% for flashError in app.flashes('reset_password_error') %}

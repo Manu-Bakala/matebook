@@ -13,7 +13,7 @@
         {% endif %}
 
         <div aria-live="polite" aria-atomic="true">
-            <div class="toast" style="position: fixed; top: 0; right: 0;z-index:9999;">
+            <div class="toast toast-top">
                 <div class="toast-header">
                     <img src="{{ asset('build/images/logo_matebook.png') }}" width="18px" height="18px" class="rounded mr-2" alt="...">
                     <strong class="mr-auto" style="color:{{ color_type }};font-size:20px">
@@ -24,7 +24,7 @@
                     </button>
                 </div>
                 <div class="toast-body text-white" style="background-color:{{ color_type }};opacity:0.9">
-                    <span class="font-weight-bold" style="font-size:20px">{{ message }}</span>
+                    <span class="font-weight-bold toast-message">{{ message }}</span>
                 </div>
             </div>
         </div>

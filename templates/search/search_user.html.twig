@@ -48,7 +48,7 @@
                                 <form action="{{ path('app_post_user_show',{id: user.id}) }}" method="post">
                                     {% if user in user_friends %}
                                         <input hidden type="number" onclick="change_id_btn_unfollow({{ user.id }})" value="1" id="unfollow_user{{ user.id }}" name="unfollow_user">
-                                        <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                        <button type="submit" class="btn btn-warning btn-sm float-right mr-3">
                                             Se désabonner&nbsp;
                                             <i class="fas fa-user-times"></i>
                                         </button>
@@ -92,7 +92,7 @@
                                         <form action="{{ path('app_post_user_show',{id: abonne.id}) }}" method="post">
                                             {% if abonne in app.user.MyFriends %}
                                                 <input hidden type="number" onclick="change_id_btn_unfollow({{ abonne.id }})" value="1" id="unfollow_user{{ abonne.id }}" name="unfollow_user">
-                                                <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                                <button type="submit" class="btn btn-warning btn-sm float-right mr-3">
                                                     Se désabonner&nbsp;
                                                     <i class="fas fa-user-times"></i>
                                                 </button>

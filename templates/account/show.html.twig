@@ -13,25 +13,124 @@
                     <p class="card-text">
                         Compte créé le {{ app.user.createdAt|date('d/m/y') }}
                     </p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">{{ app.user.email }}</li>
-                        <li class="list-group-item">
-                            <i class="fas fa-user-check"></i>&nbsp;&nbsp;
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ app.user.email }}</li>
+                    <li class="list-group-item">
+                        <i class="fas fa-user-check"></i>&nbsp;&nbsp;
+                        <a href="#" class="text-dark" data-toggle="modal" data-target="#modal_abonne">
                             {{ pluralize(app.user.FriendsWithMe|length, 'abonné','abonnés') }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="fas fa-user-friends"></i>&nbsp;&nbsp;
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-user-friends"></i>&nbsp;&nbsp;
+                        <a href="#" class="text-dark" data-toggle="modal" data-target="#modal_abonnement">
                             {{ pluralize(app.user.MyFriends|length, 'abonnement','abonnements') }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="fas fa-sticky-note"></i>&nbsp;&nbsp;
-                            {{ pluralize(posts|length, 'publication','publications') }}
-                        </li>
-                    </ul>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-sticky-note"></i>&nbsp;&nbsp;
+                        {{ pluralize(posts|length, 'publication','publications') }}
+                    </li>
+                </ul>
                 <div class="card-body">
-                <a href="{{ path('app_account_edit') }}" class="card-link">Modifier le compte</a>
-                <a href="{{ path('app_account_edit_password') }}" class="card-link">Changer le mot de passe</a>
+                    <a href="{{ path('app_account_edit') }}" class="card-link">Modifier le compte</a>
+                    <a href="{{ path('app_account_edit_password') }}" class="card-link">Changer le mot de passe</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal_abonnement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Abonnements</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    {% for abonnement in app.user.MyFriends %}
+                        <div class="row mb-3">
+                            <div class="col-1">
+                                <img src="{{ app.user.gravatarUrl(28) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                            </div>
+                            <div class="col-6">
+                                <a href="{{ path('app_post_user_show',{id: abonnement.id}) }}">
+                                    {{ abonnement.fullName }}
+                                </a>
+                            </div>
+                            <div class="col-5">
+                                <form action="{{ path('app_post_user_show',{id: abonnement.id}) }}" method="post">
+                                    <input hidden type="number" onclick="change_id_btn_unfollow({{ abonnement.id }})" value="1" id="unfollow_user{{ abonnement.id }}" name="unfollow_user">
+                                    <button type="submit" class="btn btn-warning btn-sm float-right mr-3">
+                                        Se désabonner&nbsp;
+                                        <i class="fas fa-user-times"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% if app.user.MyFriends|length == 0 %}
+                        <p>Aucun abonnement</p>
+                    {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_abonne" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Abonnés</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    {% for abonne in app.user.FriendsWithMe %}
+                        <div class="row mb-3">
+                            <div class="col-1">
+                                <img src="{{ app.user.gravatarUrl(28) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                            </div>
+                            <div class="col-6">
+                                <a href="{{ path('app_post_user_show',{id: abonne.id}) }}">
+                                    {{ abonne.fullName }}
+                                </a>
+                            </div>
+                            <div class="col-5">
+                                <form action="{{ path('app_post_user_show',{id: abonne.id}) }}" method="post">
+                                    {% if abonne in app.user.MyFriends %}
+                                        <input hidden type="number" onclick="change_id_btn_unfollow({{ abonne.id }})" value="1" id="unfollow_user{{ abonne.id }}" name="unfollow_user">
+                                        <button type="submit" class="btn btn-warning btn-sm float-right mr-3">
+                                            Se désabonner&nbsp;
+                                            <i class="fas fa-user-times"></i>
+                                        </button>
+                                    {% else %}
+                                        <input hidden type="number" onclick="change_id_btn_follow({{ abonne.id }})" value="1" id="follow_user{{ abonne.id }}" name="follow_user">
+                                        <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                            S'abonner&nbsp;
+                                            <i class="fas fa-user-plus"></i>
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% if app.user.FriendsWithMe|length == 0 %}
+                        <p>Aucun abonné</p>
+                    {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>

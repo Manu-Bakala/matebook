@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-9">
+        <div class="col-lg-3 col-md-4 col-sm-9 index-profile">
             <div class="card position-fixed">
                 <img class="card-img-top" src="{{ user.gravatarUrl(200) }}" alt="Avatar de {{ user.fullName }}"> 
                 <div class="card-body">
@@ -39,7 +39,7 @@
                         <form method="post">
                             {% if user in user.MyFriends %}
                                 <input hidden type="number" onclick="change_id_btn_unfollow({{ user.id }})" value="1" id="unfollow_user{{ user.id }}" name="unfollow_user">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-warning">
                                     Se désabonner&nbsp;
                                     <i class="fas fa-user-times"></i>
                                 </button>
@@ -81,7 +81,7 @@
                                     <form action="{{ path('app_post_user_show',{id: abonnement.id}) }}" method="post">
                                         {% if abonnement in app.user.MyFriends %}
                                             <input hidden type="number" onclick="change_id_btn_unfollow({{ abonnement.id }})" value="1" id="unfollow_user{{ abonnement.id }}" name="unfollow_user">
-                                            <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                            <button type="submit" class="btn btn-warning btn-sm float-right mr-3">
                                                 Se désabonner&nbsp;
                                                 <i class="fas fa-user-times"></i>
                                             </button>
@@ -134,7 +134,7 @@
                                     <form action="{{ path('app_post_user_show',{id: abonne.id}) }}" method="post">
                                         {% if abonne in app.user.MyFriends %}
                                             <input hidden type="number" onclick="change_id_btn_unfollow({{ abonne.id }})" value="1" id="unfollow_user{{ abonne.id }}" name="unfollow_user">
-                                            <button type="submit" class="btn btn-primary btn-sm float-right mr-3">
+                                            <button type="submit" class="btn btn-warning btn-sm float-right mr-3">
                                                 Se désabonner&nbsp;
                                                 <i class="fas fa-user-times"></i>
                                             </button>
@@ -177,15 +177,15 @@
                                                 <img src="{{ app.user.gravatarUrl(50) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
                                             </a>
                                         </div>
-                                        <div class="col-8 mt-3 ml-4">
+                                        <div class="col-7 mt-3 ml-4">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <a href="{{ path('app_post_user_show',{id: post.user.id}) }}">
                                                         <h5><strong>{{ post.user.fullName }}</strong></h5>
                                                     </a>
                                                 </div>
-                                                <div class="col-12" style="margin-top:0px">
-                                                    <small class="text-muted font-weight-bold" style="font-size:11px;">
+                                                <div class="col-12">
+                                                    <small class="text-muted font-weight-bold hour-post">
                                                         <i class="fas fa-clock"></i>
                                                         <time datetime="{{ post.createdAt|date('d-m-Y H:i:s') }}">
                                                             {{ post.createdAt|date('d-m-Y H:i:s') }}
@@ -194,19 +194,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-2 mt-3">
+                                        <div class="col-3 mt-3">
                                             <div class="float-right">
                                             {% if app.user.id == post.user.id %}
                                                 <a href="{{ path('app_post_edit', {id: post.id}) }}" class="text-decoration-none">
-                                                    <i class="fas fa-edit text-info" style="font-size:20px;"></i>&nbsp;&nbsp;
+                                                    <i class="fas fa-edit text-info edit-icon"></i>&nbsp;&nbsp;
                                                 </a>
                                                 <a href="#" 
                                                     onclick="event.preventDefault();alert_delete_post({{ post.id }})"
-                                                    style="font-size:20px;" class="text-decoration-none">
-                                                    <i class="fas fa-trash-alt text-danger"></i>
+                                                     class="text-decoration-none">
+                                                    <i class="fas fa-trash-alt text-danger edit-icon"></i>
                                                 </a>
 
-                                                <form id="js-post-delete-form{{ post.id }}" action="{{ path('app_post_delete', {id: post.id}) }}" method="post" style="display:none">
+                                                <form hidden id="js-post-delete-form{{ post.id }}" action="{{ path('app_post_delete', {id: post.id}) }}" method="post">
                                                     <input type="hidden" name="csrf_token" value="{{ csrf_token('post_delete_' ~ post.id) }}">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                 </form>
@@ -235,7 +235,7 @@
             {% endif %}
         </div>
 
-        <div class="col-lg-3 col-md-0">
+        <div class="col-lg-3 col-md-0 last-post">
             <div class="position-fixed col-md-2">
                 <div class="row">
                     <h3 class="text-center mb-2 p-2">Ses dernières publications</h3>

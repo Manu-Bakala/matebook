@@ -17,6 +17,10 @@ body {
     }
 }
 
+.custom-file-input:lang(fr)~.custom-file-label::after {
+    content: "Parcourir";
+}
+
 .post {
     img {
         transition: transform 0.3s ease-out;

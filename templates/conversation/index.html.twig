@@ -1,0 +1,199 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Metabook - Messenger{% endblock %}
+
+{% block body %}
+<div class="messenger-page h-100">
+    <div class="row justify-content-center h-100">
+        <div class="col-xl-4 chat">
+            <div class="card mb-sm-3 mb-md-0 contacts_card">
+                <div class="card-header">
+                    <div class="input-group">
+                        <input type="text" placeholder="Recherche..." name="" class="form-control search">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3 text-white">
+                        <a href="#" class="text-white" data-toggle="modal" data-target="#modal_user_conversation">
+                            <i class="fas fa-plus-circle"></i>&nbsp;Créer une discussion
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body contacts_body">
+                    <ui class="contacts">
+                    {% for conv in conversations %}
+                        <a href="{{ path('app_show_conversation',{ id:conv.conversationId }) }}" class="js-conversation text-decoration-none">
+                            <li {% if app.request.get('_route') == 'app_show_conversation' and conv.conversationId == conversation.id %} class="active" {% endif %}>
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="{{ app.user.gravatarUrl(70) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle">
+                                    </div>
+                                    <div class="user_info">
+                                        <span>{{ conv.firstName  ~ ' ' ~  conv.lastName }}</span>
+                                        <p>
+                                        {% if conv.content is not empty %}
+                                            {{ conv.content|u.truncate(60,'...') }}
+                                        {% else %}
+                                            <font class="font-italic">Aucun message...</font>
+                                        {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </a>
+                    {% endfor %}
+                    </ui>
+                </div>
+            <div class="card-footer"></div>
+        </div>
+    </div>
+        <div class="col-xl-8 chat" id="messages_conversation">
+            <div class="card">
+                {% if app.request.get('_route') == 'app_show_conversation' %}
+                <div class="card-header msg_head">
+                    <div class="d-flex bd-highlight">
+                        <div class="img_cont">
+                            <img src="{{ app.user.gravatarUrl(70) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle">
+                        </div>
+                        {% if conversation.participants[1].user == app.user %}
+                            {% set info_other_participant = conversation.participants[0] %}
+                        {% else %}
+                            {% set info_other_participant = conversation.participants[1] %}
+                        {% endif %}
+
+                        <div class="user_info">
+                            <span>{{ info_other_participant.user.fullName }}</span>
+                            <p>{{ pluralize(messages|length, 'message','messages') }}</p>
+                        </div>
+                        <div class="video_cam">
+                            <a href="{{ path('app_post_user_show',{id: info_other_participant.user.id}) }}">
+                                <span><i class="fas fa-eye"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                    <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+                    <div class="action_menu">
+                        <ul>
+                            <a href="{{ path('app_post_user_show',{id: info_other_participant.user.id}) }}" class="text-decoration-none">
+                                <li>
+                                    <img src="{{ app.user.gravatarUrl(20) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                                    Voir son profil
+                                </li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body msg_card_body">
+                {% for message in messages %}
+                    {% if message.user.id == app.user.id %}
+                    <div class="d-flex justify-content-start mb-4">
+                        <div class="img_cont_msg">
+                            <img src="{{ app.user.gravatarUrl(40) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                        </div>
+                        <div class="msg_cotainer">
+                            {{ message.content|nl2br }}
+                            <span class="msg_time">{{ message.createdAt|date('d-m-Y H:i:s') }}</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="msg_cotainer_send">
+                            {{ message.content|nl2br }}
+                            <span class="msg_time_send">{{ message.createdAt|date('d-m-Y H:i:s') }}</span>
+                        </div>
+                        <div class="img_cont_msg">
+                            <img src="{{ app.user.gravatarUrl(40) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <form action="{{ path('app_new_messages',{id:conversation.id}) }}" method="post">
+                        <div class="input-group">
+                            <textarea name="message_to_add" class="form-control type_msg" placeholder="Écrivez votre message..."></textarea>
+                            <div class="input-group-append">
+                                <span class="input-group-text send_btn">
+                                    <button type="submit" class="btn">
+                                        <i class="fas fa-location-arrow"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                <div class="text-center font-weight-bold text-white mt-5 h2">Sélectionnez une conversation</div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_user_conversation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ouvrir une discussion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            
+            {% for abonnement in app.user.MyFriends %}
+                {% set cpt = 0 %}
+                {% for conversa in conversations %}
+                    {% if conversa['id'] == abonnement.id %}
+                        {% set cpt = 1 %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if cpt == 0 %}
+                    <div class="row mb-3">
+                        <div class="col-1">
+                            <img src="{{ app.user.gravatarUrl(28) }}" alt="Avatar de {{ app.user.fullName }}" class="rounded-circle"> 
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ path('app_post_user_show',{id: abonnement.id}) }}">
+                                {{ abonnement.fullName }}
+                            </a>
+                        </div>
+                        <div class="col-5">
+                            <form action="{{ path('app_post_user_show',{id: abonnement.id}) }}" method="post">
+                                <input hidden type="number" onclick="change_id_btn_unfollow({{ abonnement.id }})" value="1" id="unfollow_user{{ abonnement.id }}" name="unfollow_user">
+                                <button type="submit" class="btn btn-warning btn-sm float-right mr-3">
+                                    <i class="fas fa-user-times"></i>
+                                </button>
+                            </form>
+                            <a href="{{ path('app_new_conversation', {id:abonnement.id}) }}" class="btn btn-success btn-sm float-right mr-3">
+                                <i class="fas fa-comment-medical"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% if app.user.MyFriends|length == 0 %}
+                <p>Aucun abonnement</p>
+            {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	$(document).ready(function(){
+        $('li').first().addClass("active");
+        $('#action_menu_btn').click(function(){
+            $('.action_menu').toggle();
+        });
+    });
+</script>
+
+{% endblock %}

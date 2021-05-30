@@ -35,7 +35,7 @@
                             {{ pluralize(posts|length, 'publication','publications') }}
                         </small>
                     </p>
-                    <p class="text-center mb-0">
+                    <p class="">
                         <form method="post">
                             {% if user in user.MyFriends %}
                                 <input hidden type="number" onclick="change_id_btn_unfollow({{ user.id }})" value="1" id="unfollow_user{{ user.id }}" name="unfollow_user">
@@ -51,6 +51,12 @@
                                 </button>
                             {% endif %}
                         </form>
+                    </p>
+                    <p class="">
+                        <a href="{{ path('app_new_conversation', {id:user.id}) }}" class="btn btn-success">
+                            Discuter&nbsp;
+                            <i class="fas fa-comment-medical"></i>
+                        </a>
                     </p>
                 </div>
             </div>

@@ -35,6 +35,7 @@
                             {{ pluralize(posts|length, 'publication','publications') }}
                         </small>
                     </p>
+                    {% if user != app.user %}
                     <p class="">
                         <form method="post">
                             {% if user in user.MyFriends %}
@@ -58,6 +59,7 @@
                             <i class="fas fa-comment-medical"></i>
                         </a>
                     </p>
+                    {% endif %}
                 </div>
             </div>
 
@@ -244,7 +246,11 @@
         <div class="col-lg-3 col-md-0 last-post">
             <div class="position-fixed col-md-2">
                 <div class="row">
+                {% if user != app.user %}
                     <h3 class="text-center mb-2 p-2">Ses dernières publications</h3>
+                {% else %}
+                    <h3 class="text-center mb-2 p-2">Mes dernières publications</h3>
+                {% endif %}
                 {% for post in posts|slice(0, 5) %}
                     <div class="col-6 mw-100 overflow-hidden mb-4 rounded">
                         <a href="{{ path('app_post_show', {id: post.id}) }}">

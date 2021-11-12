@@ -153,6 +153,7 @@
                 {% if posts|length > 0 %}
                     <div class="row mb-5">
                         {% for post in posts %}
+                            {% if post.user in app.user.MyFriends or post.user == app.user %}
                             <div class="col-12 mx-auto mb-4">
                                 <article class="post bg-white rounded shadow">
                                     <div class="pl-3 pr-3">
@@ -213,11 +214,14 @@
                                     </div>
                                 </article>
                             </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% else %}
                     <p class="h1 mt-5 text-center">
-                        Aucune publication disponible.<br>
+                        Aucune publication disponible.
+                    </p>
+                    <p class="h4 mt-3 text-center">
                         <a href="{{ path('app_post_create') }}">Créez une publication</a><br>
                         <a href="{{ path('app_user_search') }}">S'abonner à des utilisateurs</a>
                     </p>

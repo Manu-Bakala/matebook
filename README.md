@@ -3,14 +3,14 @@
 ## Database
 Go to the root of the project with the terminal (matebook-main)
 
-Run these commands to create the structure of the database
+Run these commands to create the structure of the database:
 
 - symfony console:doctrine:create
 - symfony console:doctrine:schema:create
 ***************
 
 ## Installation
-Run these commands in the terminal to install dependencies into vendor and to add encore package
+Run these commands in the terminal to install dependencies into vendor and to add encore package:
 
 - symfony composer install
 - npm add --dev @symfony/webpack-encore
@@ -21,7 +21,7 @@ Run these commands in the terminal to install dependencies into vendor and to ad
 ***************
 
 ## Starting the web application
-Run these commands in the terminal to start the server and to open the web application
+Run these commands in the terminal to start the server and to open the web application:
 
 - symfony console server:start
 - symfony open/local
